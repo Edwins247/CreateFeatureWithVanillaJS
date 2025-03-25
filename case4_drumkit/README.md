@@ -15,6 +15,7 @@
 https://keycode.info/
 
 - 키보드 입력으로 keycode를 알 수 있는 사이트
+- 이를 활용해서 keycode를 통한 소리를 발생시킴
 
 ### TransitionEvent
 
