@@ -31,6 +31,7 @@ setTimeout() 또는 setInterval()을 사용하여 주기적으로 실행하지�
 https://developer.mozilla.org/en-US/docs/Web/API/clearInterval
 
 - setInterval() 호출에 의해 설정된 시간이 지정된 반복 작업을 취소
+- setTimeout()을 취소하고 싶다면 clearTimeout 사용하면 됨
 
 ### Date()
 
