@@ -1,7 +1,7 @@
 # CreateFeatureWithVanillaJS
 - Vanilla JS로 구현하는 기능 구현 실습
 
-## 1. To-do List
+## 1. To-do List & 페이지네이션 기능
 
 ## 2. 야구 게임
 
