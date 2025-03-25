@@ -115,3 +115,4 @@ const prev = firstNumber - 1 // 6
 ### json-server
 
 https://github.com/typicode/json-server
+- 페이지네이션을 위해서, 뒤의 _page, _limit을 통해서 데이터를 가져오는데 페이지네이션에 맞게 처리할 수 있음
