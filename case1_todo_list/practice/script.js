@@ -5,6 +5,9 @@
     return document.querySelector(target)
   }
 
+  // $을 붙인 이유는 단 하나의 변수로 구분하기 위함이고, 이를 El을 붙여서 구분할 수도 있음
+  const $todos = get('.todos');
+
   const createTodoElement = (item) => {
     const { id, content } = item
     const $todoItem = document.createElement('div')
@@ -39,6 +42,26 @@
     return $todoItem
   }
 
-  const init = () => {}
+  const renderAllTodos = (todos) => {
+    $todos.innerHTML = ''
+    // todos로 받은걸 Element로 만들고 붙임
+    todos.forEach((item) => {
+      const todoElement = createTodoElement(item);
+      $todos.appendChild(todoElement);
+    })
+  }
+
+  const getTodos = () => {
+    fetch('http://localhost:3000/todos')
+      .then((response) => response.json())
+      .then((todos) => renderAllTodos(todos))
+      .catch((error) => console.log(error));
+  }
+
+  const init = () => {
+    window.addEventListener('DOMContentLoaded', () => {
+      getTodos();
+    })
+  }
   init()
 })()

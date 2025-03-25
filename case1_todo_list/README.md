@@ -15,6 +15,8 @@ https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Strict_mode
 https://github.com/typicode/json-server
 
 - 짧은 시간에 REST API를 구축해주는 패키지
+- mock 서버를 만들어서 json을 직접 서버 형태로 주고 받을 수 있게 만들 수 있음(위의 나온대로 작업을 진행하면됨)
+- 단, 터미널은 case1에 맞게 들어와서 처리해야함
 - 실제 프로덕션에서는 사용하지 않음
 - npm을 통해 설치 가능
 
