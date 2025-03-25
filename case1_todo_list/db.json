@@ -2,7 +2,7 @@
   "todos": [
     {
       "content": "테스트 1",
-      "completed": false,
+      "completed": true,
       "id": "1"
     },
     {
@@ -12,12 +12,22 @@
     },
     {
       "content": "테스트 3",
-      "completed": false,
+      "completed": true,
       "id": "3"
     },
     {
       "id": "c4d5",
       "content": "테스트4",
+      "completed": false
+    },
+    {
+      "id": "448b",
+      "content": "테스트 5",
+      "completed": false
+    },
+    {
+      "id": "2e25",
+      "content": "테스트 6",
       "completed": false
     }
   ]

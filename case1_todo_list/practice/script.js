@@ -13,8 +13,9 @@
   const $todoInput = get('.todo_input');
 
   const createTodoElement = (item) => {
-    const { id, content } = item
+    const { id, content, completed } = item
     const $todoItem = document.createElement('div')
+    const isChecked = completed ? 'checked' : ''
     $todoItem.classList.add('item')
     $todoItem.dataset.id = id
     $todoItem.innerHTML = `
@@ -22,6 +23,7 @@
               <input
                 type="checkbox"
                 class='todo_checkbox' 
+                ${isChecked}
               />
               <label>${content}</label>
               <input type="text" value="${content}" />
@@ -59,7 +61,7 @@
     fetch(API_URL)
       .then((response) => response.json())
       .then((todos) => renderAllTodos(todos))
-      .catch((error) => console.log(error));
+      .catch((error) => console.error(error));
   }
 
   const addTodo = (e) => {
@@ -74,7 +76,36 @@
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(todo),
+    }).then(getTodos) // getTodos를 호출하면서 리스트를 다시 호출해 갱신
+      .then(() => {
+        // POST가 정상적으로 처리되면 input 값을 초기화하고 포커싱 시킴
+        $todoInput.value = ''
+        $todoInput.focus()  
+      })
+      .catch((error) => console.error(error))
+  }
+
+  const toggleTodo = (e) => {
+    // todo checkbox만을 클릭시 이벤트를 처리하도록 함
+    if (e.target.className !== 'todo_checkbox') return;
+    // 클릭한 아이템 기준으로 가장 가까운 태그를 가져옴
+    const $item = e.target.closest('.item');
+    // 이를 통해 해당하는 data-id를 찾아서 몇 번째 체크박스인지 확인함
+    const id = $item.dataset.id;
+    
+    // 체크가 됐는지 확인
+    const completed = e.target.checked;
+
+    fetch(`${API_URL}/${id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json'        
+      },
+      body: JSON.stringify({ completed }),
     })
+      .then(getTodos)
+      .catch((error) => console.error(error));
+
   }
 
   const init = () => {
@@ -82,6 +113,7 @@
       getTodos();
     })
     $form.addEventListener('submit', addTodo);
+    $todos.addEventListener('click', toggleTodo);
   }
   init()
 })()
