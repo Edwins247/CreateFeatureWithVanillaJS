@@ -65,8 +65,10 @@
   }
 
   const createTodoElement = (item) => {
-    const { id, content, completed } = item
+    const { id, content, completed, recommended } = item
     const isChecked = completed ? 'checked' : ''
+    // recommended 속성 추가 후, 버튼으로 생성
+    const isRecommended = recommended ? 'active' : ''
     const $todoItem = document.createElement('div')
     $todoItem.classList.add('item')
     $todoItem.dataset.id = id
@@ -77,10 +79,14 @@
                 class='todo_checkbox'
                 ${isChecked}
               />
-              <label>${content}</label>
+              <label class="title">${content}</label>
               <input type="text" value="${content}" />
             </div>
             <div class="item_buttons content_buttons">
+              <button class="todo_recommend_button ${isRecommended}">
+                <i class="far fa-star"></i>
+                <i class="fas fa-star"></i>
+              </button>
               <button class="todo_edit_button">
                 <i class="far fa-edit"></i>
               </button>
@@ -154,6 +160,22 @@
       .catch((error) => console.error(error.message))
   }
 
+  const recommendTodo = (e) => {
+    // recommended 버튼을 찾고 해당 요소를 업데이트함
+    if (!e.target.classList.contains('todo_recommend_button')) return
+    const $item = e.target.closest('.item')
+    const id = $item.dataset.id
+    const recommended = !e.target.classList.contains('active')
+    fetch(`${API_URL}/${id}`, {
+      method: 'PATCH',
+      headers: { 'Content-type' : 'application/json'},
+      body: JSON.stringify( { recommended })
+    })
+      .then((response) => response.json())
+      .then(getTodos)
+      .catch((error) => console.error(error.message))
+  }
+
   const changeEditMode = (e) => {
     const $item = e.target.closest('.item')
     const $label = $item.querySelector('label')
@@ -162,7 +184,10 @@
     const $editButtons = $item.querySelector('.edit_buttons')
     const value = $editInput.value
 
-    if (e.target.className === 'todo_edit_button') {
+    // content 요소를 눌러도 edit 모드로 들어가게끔 처리
+    if (e.target.className === 'todo_edit_button' ||
+      e.target.className === 'title'
+    ) {
       $label.style.display = 'none'
       $editInput.style.display = 'block'
       $contentButtons.style.display = 'none'
@@ -172,7 +197,8 @@
       $editInput.value = value
     }
 
-    if (e.target.className === 'todo_edit_cancel_button') {
+    // esc키를 눌러도 취소를 함
+    if (e.target.className === 'todo_edit_cancel_button' || e.keyCode === 27) {
       $label.style.display = 'block'
       $editInput.style.display = 'none'
       $contentButtons.style.display = 'block'
@@ -182,7 +208,8 @@
   }
 
   const editTodo = (e) => {
-    if (e.target.className !== 'todo_edit_confirm_button') return
+    // 엔터칠때도 수정하게끔 함
+    if (e.target.className === 'todo_edit_confirm_button' || e.keyCode === 13) {
     const $item = e.target.closest('.item')
     const id = $item.dataset.id
     const $editInput = $item.querySelector('input[type="text"]')
@@ -197,6 +224,7 @@
       .then(getTodos)
       .catch((error) => console.error(error.message))
   }
+}
 
   const removeTodo = (e) => {
     if (e.target.className !== 'todo_remove_button') return
@@ -217,11 +245,15 @@
       pagination()
     })
 
+    // 키보드 입력시에도 처리되도록 keydown 이벤트 추가
     $form.addEventListener('submit', addTodo)
     $todos.addEventListener('click', toggleTodo)
     $todos.addEventListener('click', changeEditMode)
+    $todos.addEventListener('keydown', changeEditMode)
     $todos.addEventListener('click', editTodo)
+    $todos.addEventListener('keydown', editTodo)
     $todos.addEventListener('click', removeTodo)
+    $todos.addEventListener('click', recommendTodo)
   }
 
   init()
