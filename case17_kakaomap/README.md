@@ -3,6 +3,11 @@
 ### kakaomap sdk
 
 https://apis.map.kakao.com/web/
+https://apis.map.kakao.com/web/sample/draggableMarker/
+
+- 웹서버를 live-server 도메인을 카카오 developers의 등록필요
+- 그리고 발급받은 키를 src로 붙여넣어서 appkey를 써야함
+- 2번째 웹사이트를 통해 다양한 사용 방식을 알아볼 수 있음
 
 ### 웹서버 띄우기
 
